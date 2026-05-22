@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mariana Santos — Front-End Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --roxo: #7c3aed;
+    --roxo-brilho: #a855f7;
+    --roxo-claro: #d8b4fe;
+    --roxo-escuro: #1e0a3c;
+    --fundo: #0f0720;
+    --fundo2: #160b2e;
+    --texto: #f0e8ff;
+    --cinza: #9d88b8;
+    --borda: rgba(168,85,247,0.18);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+    overflow-x: hidden;
+  }
+
+  .bg-glow {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(124,58,237,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(168,85,247,0.10) 0%, transparent 70%);
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(15,7,32,0.88);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--borda);
+    padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1rem;
+    color: var(--roxo-claro); letter-spacing: 0.05em;
+  }
+  .nav-links { display: flex; gap: 24px; list-style: none; }
+  .nav-links a {
+    color: var(--cinza); text-decoration: none;
+    font-size: 0.875rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.ativo { color: var(--roxo-claro); }
+  .nav-links a.ativo { position: relative; }
+  .nav-links a.ativo::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 2px; background: var(--roxo-brilho); border-radius: 2px;
+  }
+  .nav-icons { display: flex; gap: 14px; }
+  .nav-icons a {
+    color: var(--cinza); font-size: 1.1rem; text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-icons a:hover { color: var(--roxo-claro); }
+
+  section {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    padding: 100px 24px 60px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+
+  /* HERO */
+  #inicio { align-items: center; text-align: center; gap: 20px; }
+  .avatar {
+    width: 100px; height: 100px; border-radius: 50%;
+    border: 3px solid var(--roxo-brilho);
+    object-fit: cover;
+    box-shadow: 0 0 32px rgba(168,85,247,0.4);
+  }
+  .hello-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--roxo-brilho); color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 0.85rem; letter-spacing: 0.1em;
+    padding: 6px 18px; border-radius: 999px;
+  }
+  .hero-nome {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.2rem, 8vw, 3.5rem);
+    font-weight: 800; line-height: 1.1; color: #fff;
+  }
+  .hero-titulo-wrapper { display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .hero-titulo-box {
+    border: 2px solid var(--roxo-brilho);
+    padding: 6px 18px; border-radius: 4px;
+  }
+  .hero-titulo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem; color: var(--roxo-claro); font-weight: 700;
+  }
+  .hero-desc { color: var(--cinza); font-size: 1rem; max-width: 440px; line-height: 1.7; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--roxo-brilho); color: #fff;
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 1rem; padding: 14px 32px; border-radius: 999px;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 24px rgba(168,85,247,0.4);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(168,85,247,0.6);
+  }
+  .tech-strip {
+    display: flex; gap: 24px; align-items: center;
+    overflow-x: auto; padding: 16px 0;
+    border-top: 1px solid var(--borda);
+    margin-top: 24px;
+  }
+  .tech-strip span {
+    color: var(--cinza); font-size: 0.75rem;
+    font-weight: 600; letter-spacing: 0.1em; white-space: nowrap;
+  }
+
+  /* SOBRE */
+  #sobre { gap: 32px; }
+  .section-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--borda); border-radius: 999px;
+    padding: 5px 16px; font-size: 0.78rem;
+    color: var(--roxo-brilho); letter-spacing: 0.1em; font-weight: 600;
+    text-transform: uppercase;
+  }
+  .section-label::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--roxo-brilho);
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+    font-weight: 800; color: #fff; line-height: 1.2;
+  }
+  .sobre-texto { color: var(--cinza); line-height: 1.8; font-size: 1rem; max-width: 580px; }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; max-width: 420px;
+  }
+  .stat-card {
+    background: rgba(168,85,247,0.06);
+    border: 1px solid var(--borda); border-radius: 12px;
+    padding: 16px 12px; text-align: center;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem; font-weight: 800; color: var(--roxo-claro);
+  }
+  .stat-label { font-size: 0.72rem; color: var(--cinza); margin-top: 2px; }
+
+  /* PROJETOS */
+  #projetos { gap: 32px; }
+  .projetos-grid { display: flex; flex-direction: column; gap: 20px; }
+  .projeto-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--borda); border-radius: 16px;
+    padding: 24px; transition: border-color 0.2s, transform 0.2s;
+  }
+  .projeto-card:hover { border-color: rgba(168,85,247,0.45); transform: translateY(-2px); }
+  .projeto-num {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+    color: var(--roxo-brilho); text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .projeto-num::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--roxo-brilho);
+  }
+  .projeto-nome {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem; font-weight: 700; color: #fff;
+    margin: 10px 0 8px;
+  }
+  .projeto-desc { color: var(--cinza); font-size: 0.9rem; line-height: 1.6; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .tag {
+    border: 1px solid rgba(168,85,247,0.28); border-radius: 999px;
+    padding: 4px 12px; font-size: 0.72rem; color: var(--cinza);
+  }
+  .btn-ver {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 18px;
+    background: var(--roxo-brilho); color: #fff;
+    font-weight: 700; font-size: 0.85rem;
+    padding: 10px 22px; border-radius: 999px;
+    text-decoration: none; transition: opacity 0.15s;
+  }
+  .btn-ver:hover { opacity: 0.85; }
+
+  /* CERTIFICADOS */
+  #certificados { gap: 32px; }
+  .certs-grid { display: flex; flex-direction: column; gap: 14px; }
+  .cert-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--borda); border-radius: 14px;
+    padding: 18px 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .cert-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: rgba(168,85,247,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+  }
+  .cert-info h4 { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; color: #fff; }
+  .cert-info p { font-size: 0.78rem; color: var(--cinza); margin-top: 2px; }
+  .cert-ano { margin-left: auto; font-size: 0.72rem; color: var(--roxo-brilho); font-weight: 700; }
+
+  /* CONTATO */
+  #contato { gap: 32px; }
+  .contato-lista { display: flex; flex-direction: column; gap: 12px; }
+  .contato-item {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--borda); border-radius: 14px;
+    padding: 18px 20px;
+    display: flex; align-items: center; gap: 16px;
+    text-decoration: none; color: inherit;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .contato-item:hover { border-color: rgba(168,85,247,0.45); transform: translateX(4px); }
+  .contato-ico {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: rgba(168,85,247,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .contato-info h4 { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; color: #fff; }
+  .contato-info p { font-size: 0.78rem; color: var(--cinza); margin-top: 2px; }
+  .contato-arrow { margin-left: auto; color: var(--cinza); font-size: 1.1rem; }
+
+  footer {
+    position: relative; z-index: 1;
+    text-align: center; padding: 32px 24px;
+    border-top: 1px solid var(--borda);
+    color: var(--cinza); font-size: 0.78rem;
+  }
+
+  .wpp {
+    position: fixed; bottom: 24px; right: 20px; z-index: 200;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: #25d366;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+    transition: transform 0.15s;
+  }
+  .wpp:hover { transform: scale(1.1); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { opacity: 0; animation: fadeUp 0.6s ease forwards; }
+  .d1 { animation-delay: 0.1s; }
+  .d2 { animation-delay: 0.25s; }
+  .d3 { animation-delay: 0.4s; }
+  .d4 { animation-delay: 0.55s; }
+  .d5 { animation-delay: 0.7s; }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<nav>
+  <span class="nav-logo">&lt;MS/&gt;</span>
+  <ul class="nav-links">
+    <li><a href="#inicio" class="ativo">Início</a></li>
+    <li><a href="#sobre">Sobre mim</a></li>
+    <li><a href="#projetos">Projetos</a></li>
+    <li><a href="#certificados">Certificados</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <div class="nav-icons">
+  <a href="https://github.com/MariSantosx" target="_blank" title="GitHub">🐙</a>
+    <a href="https://www.linkedin.com/in/mariana-souza-nascimento-dos-santos-a232a7355" target="_blank" title="LinkedIn">💼</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="inicio">
+  <div class="fade-up d1" style="display:flex;justify-content:center">
+    <img src="./FotoProfMari.png" style="width:100px;height:100px;border-radius:50%;border:3px solid #a855f7;object-fit:cover;box-shadow:0 0 32px rgba(168,85,247,0.4);">
+  </div>
+  <div class="fade-up d2" style="display:flex;align-items:center;gap:10px;justify-content:center">
+    <span class="hello-badge">HELLO</span>
+    <span style="color:var(--cinza)">I'm</span>
+  </div>
+  <h1 class="hero-nome fade-up d3">Mariana Santos</h1>
+  <div class="hero-titulo-wrapper fade-up d4">
+    <span style="color:var(--cinza)">Front-End</span>
+    <div class="hero-titulo-box"><span class="hero-titulo">Developer</span></div>
+  </div>
+  <p class="hero-desc fade-up d4">
+    Desenvolvedora Front-End em formação, apaixonada por tecnologia, design e soluções digitais com impacto real.
+  </p>
+  <a href="#projetos" class="btn-primary fade-up d5">&lt;/&gt; Ver Projetos</a>
+  <div class="tech-strip fade-up d5">
+    <span>HTML5</span><span>·</span>
+    <span>CSS3</span><span>·</span>
+    <span>JAVASCRIPT</span><span>·</span>
+    <span>REACT</span><span>·</span>
+    <span>TYPESCRIPT</span><span>·</span>
+    <span>NODE.JS</span><span>·</span>
+    <span>FIGMA</span><span>·</span>
+    <span>PYTHON</span>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <span class="section-label">SOBRE MIM</span>
+  <h2 class="section-title">Quem sou eu?</h2>
+  <p class="sobre-texto">
+    Sou estudante de Administração apaixonada por tecnologia, inovação e desenvolvimento de soluções digitais.
+    Atualmente estou em formação em Desenvolvimento Full Stack pelo DevClub, estudando HTML, CSS, JavaScript, React, Node.js e TypeScript.
+    Também estudo Inteligência Artificial, Engenharia de Prompt, automações com N8N e Análise de Dados com Python, SQL, Power BI e Tableau.
+    Tenho formação em UX/UI Design e me preparo para atuar como Product Manager Técnica, unindo negócios, tecnologia e criatividade.
+  </p>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Certificados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">2+</div>
+      <div class="stat-label">Projetos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">🚀</div>
+      <div class="stat-label">Em evolução</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETOS -->
+<section id="projetos">
+  <span class="section-label">PROJETOS</span>
+  <h2 class="section-title">O que já desenvolvi</h2>
+  <div class="projetos-grid">
+
+    <div class="projeto-card">
+      <div class="projeto-num">PROJETO 01</div>
+      <div class="projeto-nome">PageForge AI — Gerador de Landing Pages com IA</div>
+      <p class="projeto-desc">
+        Aplicação web que utiliza Inteligência Artificial para gerar landing pages completas e profissionais em segundos.
+        Basta descrever o negócio e a IA cria um site com design moderno, navbar, hero, seções de produtos, depoimentos e contato.
+      </p>
+      <div class="tags">
+        <span class="tag">HTML5</span>
+        <span class="tag">CSS3</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">API Groq</span>
+        <span class="tag">LLaMA 3.3</span>
+        <span class="tag">IA</span>
+      </div>
+      <a href="https://github.com/MariSantosx/pageforge-ai" target="_blank" class="btn-ver">↗ Ver projeto</a>
+    </div>
+
+    <div class="projeto-card">
+      <div class="projeto-num">PROJETO 02</div>
+      <div class="projeto-nome">Portfólio Pessoal — Vitrine profissional</div>
+      <p class="projeto-desc">
+        Site portfólio responsivo desenvolvido para apresentar projetos, certificados, habilidades e formas de contato,
+        com design moderno e foco em experiência do usuário.
+      </p>
+      <div class="tags">
+        <span class="tag">HTML5</span>
+        <span class="tag">CSS3</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">UI Design</span>
+        <span class="tag">Responsivo</span>
+      </div>
+   <a href="https://marianasantos-dev.vercel.app/" target="_blank" class="btn-ver">↗ Ver projeto</a>
+    </div>
+
+  </div>
+ <div class="projeto-card">
+      <div class="projeto-num">PROJETO 03</div>
+      <div class="projeto-nome">GameZone Landing Page</div>
+      <p class="projeto-desc">
+        Landing page gamer inspirada em animes
+    desenvolvida com HTML e CSS3.
+      </p>
+      <div class="tags">
+        <span class="tag">HTML5</span>
+        <span class="tag">CSS3</span>
+        <span class="tag">Layout Responsivo</span>
+        <span class="tag">IA</span>
+      </div>
+      <a href="https://github.com/MariSantosx/gamezone-landing-page.git" target="_blank" class="btn-ver">↗ Ver projeto</a>
+    </div>
+
+</section>
+
+
+
+<!-- CERTIFICADOS -->
+<section id="certificados">
+  <span class="section-label">CERTIFICADOS</span>
+  <h2 class="section-title">Conquistas & Formação</h2>
+  <div class="certs-grid">
+
+    <div class="cert-card">
+      <div class="cert-icon">🏆</div>
+      <div class="cert-info">
+        <h4>Certificado HTML5</h4>
+        <p>Dev Club — Rodolfo Mori</p>
+      </div>
+      <span class="cert-ano">2026</span>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon">🚀</div>
+      <div class="cert-info">
+        <h4>Missão Programação com IA do Zero</h4>
+        <p>Dev Club</p>
+      </div>
+      <span class="cert-ano">2026</span>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon">🎨</div>
+      <div class="cert-info">
+        <h4>Figma para Desenvolvedores</h4>
+        <p>Udemy</p>
+      </div>
+      <span class="cert-ano">2021</span>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon">⚡</div>
+      <div class="cert-info">
+        <h4>Scrum Overview</h4>
+        <p>Ka Solution</p>
+      </div>
+      <span class="cert-ano">2022</span>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon">💻</div>
+      <div class="cert-info">
+        <h4>Tecnologia da Informação e Comunicação</h4>
+        <p>SENAI-SP</p>
+      </div>
+      <span class="cert-ano">2021</span>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon">🎓</div>
+      <div class="cert-info">
+        <h4>Computer/IT Administration and Management</h4>
+        <p>Universidade UNG — Em andamento</p>
+      </div>
+      <span class="cert-ano">2027</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <span class="section-label">CONTATO</span>
+  <h2 class="section-title">Vamos conversar?</h2>
+  <div class="contato-lista">
+
+    <a href="mailto:mari.s.santosx@gmail.com" class="contato-item">
+      <div class="contato-ico">✉️</div>
+      <div class="contato-info">
+        <h4>Email</h4>
+        <p>mari.s.santosx@gmail.com</p>
+      </div>
+      <span class="contato-arrow">→</span>
+    </a>
+
+    <a href="https://www.linkedin.com/in/mariana-souza-nascimento-dos-santos-a232a7355" target="_blank" class="contato-item">
+      <div class="contato-ico">💼</div>
+      <div class="contato-info">
+        <h4>LinkedIn</h4>
+        <p>Conexão profissional e networking</p>
+      </div>
+      <span class="contato-arrow">→</span>
+    </a>
+
+    <a href="https://github.com/MariSantosx" target="_blank" class="contato-item">
+      <div class="contato-ico">🐙</div>
+      <div class="contato-info">
+        <h4>GitHub</h4>
+        <p>Projetos, estudos e repositórios</p>
+      </div>
+      <span class="contato-arrow">→</span>
+    </a>
+
+    <div class="contato-item" style="cursor:default">
+      <div class="contato-ico">📍</div>
+      <div class="contato-info">
+        <h4>Localização</h4>
+        <p>São Paulo e Região — SP</p>
+      </div>
+    </div>
+
+  </div>
+
+  <a href="https://www.linkedin.com/in/mariana-souza-nascimento-dos-santos-a232a7355" target="_blank" class="btn-primary" style="align-self:center;margin-top:8px;">
+    💼 Conectar no LinkedIn
+  </a>
+</section>
+
+<footer>
+  <p>Feito com 💜 por <strong>Mariana Santos</strong> · 2026</p>
+</footer>
+
+<a href="https://wa.me/5511969299724" target="_blank" class="wpp" title="WhatsApp">💬</a>
+
+<script>
+  const sections = document.querySelectorAll('section');
+  const links = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    links.forEach(a => {
+      a.classList.remove('ativo');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('ativo');
+    });
+  });
+</script>
+</body>
+</html>
